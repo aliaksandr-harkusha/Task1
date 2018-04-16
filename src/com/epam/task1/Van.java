@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import static java.lang.System.exit;
 
-
 public class Van {
     private double maxCost;
     private double balanceCost;
@@ -36,8 +35,9 @@ public class Van {
               case 1: addCoffee(); break;
               case 2: showVan(); break;
               case 3: sortVan(); break;
-              case 4: searchVan(); break;
-              case 5: exit(0); break;
+              case 4: searchProduct(); break;
+              case 5: deleteProduct(); break;
+              case 6: exit(0); break;
               default: System.out.println("Нет такого варианта"); break;
           }
       }
@@ -69,7 +69,7 @@ public class Van {
         System.out.print("Введите количество: ");
         count = Integer.parseInt(enterText());
         for(int i=0; i<count; i++) {
-            if((balanceCost-cost)>0 && (balanceAmount-amount-packAmount)>0) {
+            if((balanceCost-cost)>=0 && (balanceAmount-amount-packAmount)>=0) {
                 coffee = new Coffee(physicalState, kind, amount, packAmount, cost, weight);
                 van.add(coffee);
                 balanceCost-=cost;
@@ -123,7 +123,7 @@ public class Van {
     }
 
     //Поиск в фургоне товаров по параметрам
-    private void searchVan(){
+    private void searchProduct(){
         double min;
         double max;
         String buff;
@@ -135,7 +135,7 @@ public class Van {
                 System.out.println("Введите максимальное значение");
                 max = Double.parseDouble(enterText());
                 for (Coffee coffee :van) {
-                    if (coffee.getCost()>min && coffee.getCost()<max)
+                    if (coffee.getCost()>=min && coffee.getCost()<=max)
                         showVanElement(coffee);
                 }
                 break;
@@ -145,7 +145,7 @@ public class Van {
                 System.out.println("Введите максимальное значение");
                 max = Double.parseDouble(enterText());
                 for (Coffee coffee :van) {
-                    if (coffee.getWeight()>min && coffee.getWeight()<max)
+                    if (coffee.getWeight()>=min && coffee.getWeight()<=max)
                         showVanElement(coffee);
                 }
                 break;
@@ -155,7 +155,7 @@ public class Van {
                 System.out.println("Введите максимальное значение");
                 max = Double.parseDouble(enterText());
                 for (Coffee coffee :van) {
-                    if ((coffee.getAmount()+coffee.getPackAmount())>min && (coffee.getAmount()+coffee.getPackAmount())<max)
+                    if ((coffee.getAmount()+coffee.getPackAmount())>=min && (coffee.getAmount()+coffee.getPackAmount())<=max)
                         showVanElement(coffee);
                 }
                 break;
@@ -197,7 +197,8 @@ public class Van {
         System.out.println("2) Вывести содержимое фургона");
         System.out.println("3) Отсортировать содержимое фургона");
         System.out.println("4) Поиск товара по параметрам");
-        System.out.println("5) Выход");
+        System.out.println("5) Удалить элемент");
+        System.out.println("6) Выход");
         return Integer.parseInt(enterText());
     }
 
@@ -220,5 +221,22 @@ public class Van {
             case 4: return "Растворимый в пакетах";
             default: return "Арабика";
         }
+    }
+
+    //Удаление продукта из фургона
+    private void deleteProduct(){
+        int i =0;
+        for (Coffee coffee :van) {
+            System.out.print(((i++)+1)+") ");
+            System.out.print("Цена: "+coffee.getCost()+" ||| ");
+            System.out.println("Суммарный объем: "+(coffee.getPackAmount()+coffee.getAmount())+" ||| ");
+
+        }
+        System.out.println("Какой товар вы хотите удалить?");
+        int index = Integer.parseInt(enterText());
+        if(index<=van.size())
+        van.remove(van.get(index-1));
+        else System.out.println("веден неверный индекс");
+
     }
 }
