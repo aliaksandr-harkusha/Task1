@@ -1,3 +1,4 @@
+// класс очень перегружен бизнес логикой
 package com.epam.task1;
 import java.io.BufferedReader;
 import java.io.IOException;
